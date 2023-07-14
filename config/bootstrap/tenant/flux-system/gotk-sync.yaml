@@ -1,0 +1,45 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: GitRepository
+metadata:
+  name: flux2-kind
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    branch: main
+  url: https://github.com/angelbarrera92/flux2-kind.git
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: flux2-kind
+  namespace: flux-system
+  labels:
+    flux2-kind/phase: init
+spec:
+  dependsOn:
+    - name: init-flux2-kind
+  suspend: false
+  interval: 1m0s
+  path: ./cluster
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux2-kind
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: init-flux2-kind
+  namespace: flux-system
+  labels:
+    flux2-kind/phase: init
+spec:
+  suspend: false
+  interval: 1m0s
+  path: ./cluster/init
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux2-kind
