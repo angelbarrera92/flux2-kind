@@ -3,3 +3,12 @@ kind: Kustomization
 resources:
 - gotk-components.yaml
 - gotk-sync.yaml
+
+patches:
+# Every flux resource must be deployed with the label odp/phase=init to be deployed by the init-co kustomization
+- target:
+    labelSelector: app.kubernetes.io/part-of=flux
+  patch: |-
+    - op: add
+      path: /metadata/labels/flux2-kind~1phase
+      value: init
