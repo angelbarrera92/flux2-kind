@@ -7,7 +7,8 @@ metadata:
 spec:
   interval: 1m0s
   ref:
-    branch: main
+    # branch: main
+    branch: flux2 # Moved to flux2 branch
   url: https://github.com/angelbarrera92/flux2-kind.git
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
